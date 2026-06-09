@@ -1,0 +1,84 @@
+.board {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.board-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.board-header h2 { margin: 0; font-size: 1.5rem; color: #212529; }
+
+.back-btn {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #212529;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.column {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column h3 { margin: 0 0 16px; font-size: 1rem; }
+
+.cards { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.card {
+  background: white;
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.card p { margin: 0 0 8px; font-size: 0.9rem; }
+
+.card-actions { display: flex; gap: 8px; }
+
+.vote-btn, .delete-btn {
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.vote-btn { background: #e7f5ff; color: #3B5BDB; }
+.delete-btn { background: #fff5f5; color: #e03131; }
+
+.add-card { display: flex; gap: 8px; margin-top: 12px; }
+
+.add-card input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.add-card button {
+  background: #3B5BDB;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
+}
