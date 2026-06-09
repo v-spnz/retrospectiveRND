@@ -1,6 +1,6 @@
 .board {
   padding: 24px;
-  background: #f8f9fa;
+  background: #f0f2f5;
   min-height: 100vh;
 }
 
@@ -15,31 +15,43 @@
 
 .back-btn {
   background: white;
-  border: 1px solid #ccc;
+  border: 1px solid #dee2e6;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   color: #212529;
+  font-size: 0.9rem;
 }
+
+.back-btn:hover { border-color: #3B5BDB; color: #3B5BDB; }
 
 .columns {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  align-items: start;
 }
 
 .column {
-  background: #f8f9fa;
+  background: #ebecf0;
   border-radius: 8px;
-  padding: 16px;
-  min-height: 400px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
-.column h3 { margin: 0 0 16px; font-size: 1rem; }
+.column h3 {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 
-.cards { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .card {
   background: white;
@@ -48,37 +60,155 @@
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.card p { margin: 0 0 8px; font-size: 0.9rem; }
+.card p { margin: 0 0 8px; font-size: 0.88rem; line-height: 1.4; }
 
 .card-actions { display: flex; gap: 8px; }
 
 .vote-btn, .delete-btn {
   border: none;
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 3px 8px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
 .vote-btn { background: #e7f5ff; color: #3B5BDB; }
 .delete-btn { background: #fff5f5; color: #e03131; }
 
-.add-card { display: flex; gap: 8px; margin-top: 12px; }
-
-.add-card input {
-  flex: 1;
+.draft-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 8px;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  font-size: 0.85rem;
 }
 
-.add-card button {
+.draft-card textarea {
+  width: 100%;
+  min-height: 72px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+}
+
+.draft-card textarea:focus { border-color: #3B5BDB; }
+
+.draft-actions { display: flex; gap: 8px; }
+
+.save-btn {
   background: #3B5BDB;
   color: white;
   border: none;
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
   cursor: pointer;
+  font-weight: 600;
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #868e96;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+
+.cancel-btn:hover { color: #212529; }
+
+.add-btn {
+  background: transparent;
+  border: none;
+  color: #5e6c84;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.add-btn:hover { background: rgba(0,0,0,0.08); color: #212529; }
+
+.card-drag-handle {
+  cursor: grab;
+  color: #adb5bd;
   font-size: 1rem;
+  margin-bottom: 4px;
+  user-select: none;
+}
+
+.card-drag-handle:active { cursor: grabbing; }
+
+.card-pinned {
+  border-left: 3px solid #FCC419;
+}
+
+.pin-icon { font-size: 0.8rem; }
+
+.menu-wrapper { position: relative; }
+
+.menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #868e96;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.menu-btn:hover { background: #f1f3f5; color: #212529; }
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: 24px;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  z-index: 100;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.menu-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #212529;
+}
+
+.menu-dropdown button:hover { background: #f8f9fa; }
+
+.menu-delete { color: #e03131 !important; }
+
+.edit-area { display: flex; flex-direction: column; gap: 8px; }
+
+.edit-area textarea {
+  width: 100%;
+  min-height: 64px;
+  border: 1px solid #3B5BDB;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+}
+
+.drag-overlay {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  transform: rotate(2deg);
+  cursor: grabbing;
 }
