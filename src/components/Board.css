@@ -62,7 +62,7 @@
 
 .card p { margin: 0 0 8px; font-size: 0.88rem; line-height: 1.4; }
 
-.card-actions { display: flex; gap: 8px; }
+.card-actions { display: flex; align-items: center; gap: 8px; }
 
 .vote-btn, .delete-btn {
   border: none;
@@ -74,6 +74,30 @@
 
 .vote-btn { background: #e7f5ff; color: #3B5BDB; }
 .delete-btn { background: #fff5f5; color: #e03131; }
+.delete-btn:hover { background: #ffe3e3; }
+
+.delete-confirmation {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e9ecef;
+}
+
+.delete-confirmation p { margin-bottom: 8px; }
+
+.confirm-delete-btn {
+  background: #e03131;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-delete-btn:hover { background: #c92a2a; }
+.confirm-delete-btn:disabled { opacity: 0.65; cursor: wait; }
+.delete-confirmation .delete-error { color: #c92a2a; margin: 8px 0 0; font-size: 0.8rem; }
 
 .draft-card {
   display: flex;

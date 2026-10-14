@@ -6,6 +6,9 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(card.text);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const menuRef = useRef(null);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -47,6 +50,25 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
     setMenuOpen(false);
   };
 
+  const requestDelete = () => {
+    setMenuOpen(false);
+    setDeleteError("");
+    setConfirmingDelete(true);
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      await onDelete();
+      setConfirmingDelete(false);
+    } catch {
+      setDeleteError("Could not delete this card. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div
       ref={setNodeRef}
@@ -76,18 +98,33 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
           <p>{card.pinned && <span className="pin-icon">📌 </span>}{card.text}</p>
           <div className="card-actions">
             <button className="vote-btn" onClick={onUpvote}>👍 {card.votes}</button>
+            <button className="delete-btn" onClick={requestDelete} aria-label="Delete card">Delete</button>
             <div className="menu-wrapper" ref={menuRef}>
-              <button className="menu-btn" onClick={() => setMenuOpen((o) => !o)}>⋯</button>
+              <button className="menu-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Card options">⋯</button>
               {menuOpen && (
                 <div className="menu-dropdown">
                   <button onClick={handleEdit}>✏️ Edit card</button>
                   <button onClick={handleCopy}>📋 Copy card text</button>
                   <button onClick={handlePin}>{card.pinned ? "📌 Unpin card" : "📌 Pin card"}</button>
-                  <button className="menu-delete" onClick={() => { setMenuOpen(false); onDelete(); }}>🗑️ Delete card</button>
+                  <button className="menu-delete" onClick={requestDelete}>🗑️ Delete card</button>
                 </div>
               )}
             </div>
           </div>
+          {confirmingDelete && (
+            <div className="delete-confirmation">
+              <p>Delete this card?</p>
+              <div className="draft-actions">
+                <button className="confirm-delete-btn" onClick={handleDelete} disabled={deleting}>
+                  {deleting ? "Deleting..." : "Delete card"}
+                </button>
+                <button className="cancel-btn" onClick={() => { setConfirmingDelete(false); setDeleteError(""); }} disabled={deleting}>
+                  Cancel
+                </button>
+              </div>
+              {deleteError && <p className="delete-error" role="alert">{deleteError}</p>}
+            </div>
+          )}
         </>
       )}
     </div>
