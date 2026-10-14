@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -10,6 +10,7 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const menuRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: card.id });
@@ -29,6 +30,43 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
+
+  useLayoutEffect(() => {
+    if (!menuOpen) return;
+
+    const positionMenu = () => {
+      const wrapper = menuRef.current;
+      const dropdown = dropdownRef.current;
+      if (!wrapper || !dropdown) return;
+
+      const anchor = wrapper.getBoundingClientRect();
+      const menu = dropdown.getBoundingClientRect();
+      const edge = 12;
+      const left = Math.max(
+        edge - anchor.left,
+        Math.min(0, window.innerWidth - edge - anchor.left - menu.width),
+      );
+      const below = anchor.height + 4;
+      const above = -menu.height - 4;
+      const preferredTop = anchor.bottom + 4 + menu.height <= window.innerHeight - edge
+        ? below : above;
+      const top = Math.max(
+        edge - anchor.top,
+        Math.min(preferredTop, window.innerHeight - edge - anchor.top - menu.height),
+      );
+
+      dropdown.style.left = `${left}px`;
+      dropdown.style.top = `${top}px`;
+    };
+
+    positionMenu();
+    window.addEventListener("resize", positionMenu);
+    window.addEventListener("scroll", positionMenu, true);
+    return () => {
+      window.removeEventListener("resize", positionMenu);
+      window.removeEventListener("scroll", positionMenu, true);
+    };
+  }, [menuOpen]);
 
   const handleEdit = () => {
     setMenuOpen(false);
@@ -100,9 +138,9 @@ function Card({ card, onUpvote, onDelete, onEdit, onPin }) {
             <button className="vote-btn" onClick={onUpvote}>👍 {card.votes}</button>
             <button className="delete-btn" onClick={requestDelete} aria-label="Delete card">Delete</button>
             <div className="menu-wrapper" ref={menuRef}>
-              <button className="menu-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Card options">⋯</button>
+              <button className="menu-btn" onClick={() => setMenuOpen((o) => !o)} aria-label="Card options" aria-expanded={menuOpen}>⋯</button>
               {menuOpen && (
-                <div className="menu-dropdown">
+                <div className="menu-dropdown" ref={dropdownRef}>
                   <button onClick={handleEdit}>✏️ Edit card</button>
                   <button onClick={handleCopy}>📋 Copy card text</button>
                   <button onClick={handlePin}>{card.pinned ? "📌 Unpin card" : "📌 Pin card"}</button>

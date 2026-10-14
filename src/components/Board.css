@@ -190,15 +190,17 @@
 
 .menu-dropdown {
   position: absolute;
-  right: 0;
-  top: 24px;
+  left: 0;
+  top: 100%;
   background: white;
   border: 1px solid #dee2e6;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   z-index: 100;
   min-width: 160px;
-  overflow: hidden;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  overflow: auto;
 }
 
 .menu-dropdown button {
